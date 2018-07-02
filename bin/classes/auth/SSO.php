@@ -18,6 +18,9 @@ class SSO
 		$this->appId     = $reflection->getUser();
 		$this->appSecret = $reflection->getPassword();
 		
+		if (!$this->appSecret) {
+			throw new Exception('App Secret is missing', 1807021658);
+		}
 	}
 	
 	/**

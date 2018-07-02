@@ -97,7 +97,8 @@ abstract class BaseController extends Controller
 				throw new PublicException('Malformed signature', 400);
 			}
 			else {
-				$secondarySSO  = new SSOCache(db()->table('authapp')->get('appID', $pieces[1])->first(true)->sso->ssoURL);
+				$credentials = db()->table('authapp')->get('appID', $pieces[1])->first(true);
+				$secondarySSO  = new SSOCache($credentials->sso? $credentials->sso->ssoURL : $credentials->ssoURL);
 				$this->authapp = $secondarySSO->authApp($_GET['signature']);
 			}
 		}

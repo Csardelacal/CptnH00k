@@ -36,23 +36,41 @@ class InboxDirector extends Director
 			$pieces = explode('.', $record->trigger);
 			
 			$query = db()->table('listener')->get('source', $record->app);
+			
+			/*
+			 * The system triggers the event and all "parent" events, so if an app
+			 * triggers "user.updated.1337", the system will notify applications
+			 * listening to "user.updated.1337", "user.updated.*", "user.*" and "*"
+			 * 
+			 * Please note, that it will not trigger events without a wildcard, so,
+			 * applications listening for "user.updated" will not be notified when
+			 * "user.updated.1337" is called.
+			 */
 			$group = $query->group();
 			$group->where('listenTo', $record->trigger);
 			
-			array_pop($pieces);
-			
-			while (!empty($pieces)) {
-				$group->where('listenTo', implode('.', $pieces) . '*');
+			do {
 				array_pop($pieces);
+				$group->where('listenTo', implode('.', $pieces) . '.*');
 			} 
+			while (!empty($pieces));
 			
 			$listeners = $query->all();
 			
+			/*
+			 * Loop over all the listeners that were registered for this application.
+			 * 
+			 * This block is the reason that we defer processing the inbox instead
+			 * of immediately processing them when received. There may be dozens, or
+			 * even hundreds of hooks registered for a single application.
+			 * 
+			 * While that behavior is unusual (usually an app has a few listeners
+			 * attached to each event) it is possible that an application raising
+			 * a certain event notifies many oher apps.
+			 */
 			foreach ($listeners as $listener) {
 				$outbox = db()->table('outbox')->newRecord();
 				$outbox->app = $listener->target;
-				
-				//TODO: Authenticate PSK apps too
 				$outbox->url = $listener->URL;
 				$outbox->payload = $record->payload; //TODO: Perform transliteration here
 				$outbox->scheduled = $record->scheduled + $listener->defer;
@@ -61,6 +79,7 @@ class InboxDirector extends Director
 			
 			$record->processed = time();
 			$record->store();
+			
 		}
 	}
 	

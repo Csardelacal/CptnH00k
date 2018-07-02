@@ -50,30 +50,55 @@ class ListenerController extends BaseController
 			if (!$this->request->isPost()) { throw new HTTPMethodException(); }
 			if (!$this->validation->isEmpty()) { throw new ValidationException('Validation failed', 0, $this->validation->toArray()); }
 			
-			$target = db()->table('authapp')->get('appID', $this->authapp? $this->authapp->getRemote()->getId() : $_POST['target'])->first();
+			/*
+			 * Get the target application. If there is no target to be found, we
+			 * will raise an exception.
+			 * 
+			 * It'd be interesting to ship CptnH00k with listeners for the Auth
+			 * server, when app.* events happen, it could automatically refresh
+			 * the application list.
+			 */
+			$target = db()->table('authapp')->get('appID', $this->authapp? $this->authapp->getRemote()->getId() : $_POST['target'])->first(true);
+			
+			/*
+			 * Check if the listener already exists for this application (to ensure
+			 * that applications do request the same listener multiple times).
+			 * 
+			 * This should avoid programmers' need to check whether a hook already
+			 * exists, they can just parse their recipe file, push the hooks and
+			 * let h00k do the work.
+			 */
 			$record = db()->table('listener')->get('target', $target)->where('internalId', $_POST['hid'])->first()? : db()->table('listener')->newRecord();
 			
-			//TODO: Ensure that the apps exist
-			
+			/*
+			 * Use the data submitted to register the hook. We make sure the data
+			 * is validated by using Spitfire's validation mechanism in the 
+			 * annotations.
+			 */
 			$record->internalId = $_POST['hid'];
-			$record->source = db()->table('authapp')->get('appID', $_POST['app'])->first();
+			$record->source = db()->table('authapp')->get('appID', $_POST['app'])->first(true);
 			$record->target = $target;
 			$record->listenTo = $_POST['listen'];
 			$record->URL = $_POST['url'];
 			$record->defer = $_POST['defer'];
 			$record->format = $_POST['format'];
-			
 			$record->createdBy = $this->authapp? 'app:' . $this->authapp->getRemote()->getId() : 'user:' . (int)$this->user;
+			
 			$record->store();
 			
 			$this->view->set('success', $record);
 		} 
+		/*
+		 * Validation has failed. The application / user should be informed why
+		 * this happened, the error messages are therefore passed onto the view.
+		 */
 		catch (ValidationException $e) {
-			var_dump($e);
-			die();
+			$this->view->set('messages', $e->getResult());
 		}
 		catch (HTTPMethodException $ex) {
-
+			if ($this->authapp) { 
+				throw new PublicExeption('Invalid request method. Apps cannot GET this endpoint', 400); 
+			}
 		}
 	}
 	
@@ -81,16 +106,24 @@ class ListenerController extends BaseController
 	 * 
 	 * @validate schedule (number positive)
 	 * @validate defer (number positive)
-	 * @validate trigger (required string length[3, 50])
+	 * @validate event (required string length[3, 50])
 	 */
 	public function trigger() {
 		
 		if (!$this->authapp && !$this->user) {
 			throw new PublicException('Insufficient privileges', 403);
 		}
-		
-		if ($this->authapp) {
+				
+		if ($this->authapp && $this->authapp->getRemote()) {
 			$src = $this->authapp->getRemote()->getId();
+		}
+		/*
+		 * The application does not provide a remote source, this would imply that
+		 * the other party is the SSO server (since it is the only app that does 
+		 * not require signing)
+		 */
+		elseif ($this->authapp && $this->authapp->getSrc()->getId() == $this->sso->getAppId()) {
+			$src = $this->authapp->getSrc()->getId();
 		}
 		elseif ($_GET['psk']) {
 			//TODO Define behavior when an application with a pre-shared-key is pushing an event
@@ -102,8 +135,19 @@ class ListenerController extends BaseController
 			throw new PublicException('No application defined', 403);
 		}
 		
+		/*
+		 * Spitfire will automatically handle JSON and XML payloads and convert 
+		 * them to post, this way the application can just store the _POST variable
+		 * and use it later, when placing it in the outbox.
+		 */
 		$payload = json_encode($_POST);
-		$trigger = $_GET['trigger'];
+		
+		/*
+		 * Identify the trigger that was sent from the app. This allows applications
+		 * to listen for certain events within the source application instead of
+		 * listening to all events.
+		 */
+		$trigger = $_GET['event'];
 		
 		$record  = db()->table('inbox')->newRecord();
 		$record->app = db()->table('authapp')->get('appID', $src)->first();
@@ -115,6 +159,24 @@ class ListenerController extends BaseController
 		$this->view->set('record', $record);
 	}
 	
+	public function on($appId) {
+		
+		if (!$this->authapp || $this->authapp->getRemote()) {
+			throw new PublicException('Invalid signature received.', 403);
+		}
+		
+		$sso = db()->table('authapp')->get('appID', $this->authapp->getSrc()->getId())->first(true);
+		
+		if (!$sso || !$sso->isSSO) {
+			throw new PublicException('Application cannot list listeners, please refer to your authentication server', 403);
+		}
+		
+		$app = db()->table('authapp')->get('appID', $appId)->first(true);
+		$listeners = db()->table('listener')->get('source', $app)->all();
+		
+		$this->view->set('listeners', $listeners);
+	}
+
 	/**
 	 * 
 	 * 
