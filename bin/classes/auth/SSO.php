@@ -101,6 +101,7 @@ class SSO
 		$response = $request->send();
 		
 		$json = json_decode($response);
+		$src  = new App($json->local->id, $this->appSecret, $json->local->name);
 		
 		if (isset($json->remote)) {
 			$app = new App($json->remote->id, null, $json->remote->name);
@@ -122,8 +123,7 @@ class SSO
 			$contexts = [];
 		}
 		
-		$src  = new App($json->src->id, null, $json->src->name);
-		$res  = new AppAuthentication($this, $json->authenticated, $json->grant, $src, $app, $contexts, $json->redirect);
+		$res  = new AppAuthentication($this, $src, $app, $contexts, $json->token);
 		
 		return $res;
 	}
