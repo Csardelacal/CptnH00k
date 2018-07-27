@@ -1,7 +1,5 @@
 <?php
 
-use spitfire\io\session\Session;
-
 /* 
  * The MIT License
  *
@@ -26,31 +24,15 @@ use spitfire\io\session\Session;
  * THE SOFTWARE.
  */
 
-class UserController extends BaseController
-{
-	
-	public function login() {
-		/*
-		 * Check whether the user is already logged in, if this is the case, then
-		 * it's safe to redirect the user back to the rest of the application.
-		 */
-		if ($this->user) {
-			return $this->response->setBody('Redirecting...')->getHeaders()->redirect(isset($_GET['returnto'])? $_GET['returnto'] : url());
-		}
-		
-		$session = Session::getInstance();
-		$sso     = $this->sso;
-		
-		$token   = $sso->createToken();
-		$session->lock($token);
-		
-		if (!$token->isAuthenticated()) {
-			return $this->response->setBody('Redirecting...')
-				->getHeaders()->redirect($token->getRedirect(url('user', 'login', $_GET->getRaw())->absolute(), url('user', 'failure')->absolute()));
-		}
-		else {
-			return $this->response->setBody('Redirecting...')->getHeaders()->redirect(isset($_GET['returnto'])? $_GET['returnto'] : url());
-		}
-	}
-	
+if (!isset($messages)) {
+	echo json_encode([
+		'success' => true,
+		'id' => $success->target->appID . ':' . $success->internalId
+	]);
+}
+else {
+	echo json_encode([
+		'success' => false,
+		'msgs' => print_r($messages, true)
+	]);
 }

@@ -48,10 +48,16 @@ class OutboxDirector extends Director
 				];
 			}
 			
-			$response = request($job->url . '?' . http_build_query($querystring))
+			$request = request($job->url . '?' . http_build_query($querystring))
 			->header('Content-type', 'application/json')
-			->post(json_encode(json_decode($job->payload)))
-			->send();
+			->post(json_encode(json_decode($job->payload)));
+			
+			foreach ($querystring as $k => $v) {
+				$request->get($k, $v);
+			}
+			
+			
+			$response = $request->send();
 			
 			if ($response->status() !== 200 && $job->attempt < 10) {
 				$retry = db()->table('outbox')->newRecord();

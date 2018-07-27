@@ -31,6 +31,10 @@ class AppController extends BaseController
 		
 	}
 	
+	public function authenticate() {
+		$this->view->set('app', $this->authapp);
+	}
+	
 	public function refresh() {
 		
 		$ssoList = db()->table('authapp')->get('isSSO', true)->all();

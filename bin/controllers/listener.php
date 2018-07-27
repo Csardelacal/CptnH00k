@@ -58,7 +58,8 @@ class ListenerController extends BaseController
 			 * server, when app.* events happen, it could automatically refresh
 			 * the application list.
 			 */
-			$target = db()->table('authapp')->get('appID', $this->authapp? $this->authapp->getRemote()->getId() : $_POST['target'])->first(true);
+			$authapp = db()->table('authapp')->get('appID', $this->authapp->getRemote()->getId())->first();
+			$target  = db()->table('authapp')->get('appID', $authapp && !$authapp->isSSO? $this->authapp->getRemote()->getId() : $_POST['target'])->first(true);
 			
 			/*
 			 * Check if the listener already exists for this application (to ensure
@@ -161,7 +162,7 @@ class ListenerController extends BaseController
 	
 	public function on($appId) {
 		
-		if (!$this->authapp || $this->authapp->getRemote()) {
+		if (!$this->authapp) {
 			throw new PublicException('Invalid signature received.', 403);
 		}
 		
@@ -172,8 +173,35 @@ class ListenerController extends BaseController
 		}
 		
 		$app = db()->table('authapp')->get('appID', $appId)->first(true);
-		$listeners = db()->table('listener')->get('source', $app)->all();
 		
+		$query = db()->table('listener')->get('source', $app);
+		
+		if(isset($_GET['target']) && !empty($_GET['target'])) {
+			$query->where('target', db()->table('authapp')->get('appID', $_GET['target'])->first(true));
+		}
+		
+		$listeners = $query->all();
+		
+		$this->view->set('app', $app);
+		$this->view->set('listeners', $listeners);
+	}
+	
+	public function target($appId) {
+		
+		if (!$this->authapp) {
+			throw new PublicException('Invalid signature received.', 403);
+		}
+		
+		$sso = db()->table('authapp')->get('appID', $this->authapp->getSrc()->getId())->first(true);
+		
+		if (!$sso || !$sso->isSSO) {
+			throw new PublicException('Application cannot list listeners, please refer to your authentication server', 403);
+		}
+		
+		$app = db()->table('authapp')->get('appID', $appId)->first(true);
+		$listeners = db()->table('listener')->get('target', $app)->all();
+		
+		$this->view->set('app', $app);
 		$this->view->set('listeners', $listeners);
 	}
 

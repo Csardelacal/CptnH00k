@@ -69,6 +69,15 @@ abstract class BaseController extends Controller
 		$token      = $session->getUser();
 		$memcache   = MemcachedAdapter::getInstance();
 		
+		/*
+		 * Only system administrators are allowed to manage the data inside CptnH00k,
+		 * therefore, when the user is logged in, we do check whether the user is
+		 * part of any group that grants SysAdmin privileges.
+		 * 
+		 * Note: Generally speaking, CptnH00k is configured as a System application,
+		 * therefore, only administrators can create sessions to it anyway. This is
+		 * just an additional check to ensure that no user can manipulate this.
+		 */
 		$this->user = !$token? false : $memcache->get('cptnh00k_token_' . $token->getId(), function () use ($token) {
 			if (!$token->isAuthenticated()) { return false; }
 			
