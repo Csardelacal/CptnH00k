@@ -1,9 +1,5 @@
 <?php
 
-/**
- * Prebuilt test controller. Use this to test all the components built into
- * for right operation. This should be deleted whe using Spitfire.
- */
 
 class HomeController extends BaseController
 {
@@ -17,7 +13,7 @@ class HomeController extends BaseController
 			$this->response->setBody('Redirecting...')->getHeaders()->redirect(url('user', 'login'));
 		}
 		
-		$apps = $this->sso->getAppList();
-		$this->view->set('message', print_r($apps, true));
+		$apps = db()->table('authapp')->getAll()->all();
+		$this->view->set('apps', $apps);
 	}
 }

@@ -1,0 +1,726 @@
+@charset "UTF-8";
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 02-jun-2015, 21:46:57
+    Author     : cesaradelacalbretschneider
+*/
+* {
+  box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #FAFAFA; }
+
+.hidden {
+  display: none !important; }
+
+/*
+ * Disabled items should be unable to receive mouse pointer events. When clicked
+ * or interacted with, these items should be unresponsive.
+ */
+:disabled, .disabled, [disabled] {
+  pointer-events: none; }
+
+a {
+  color: #555;
+  text-decoration: none; }
+  a:hover {
+    color: #333; }
+  a.highlighted {
+    color: #2a912e; }
+    a.highlighted:hover {
+      color: #2a912e; }
+  a.heavy {
+    font-weight: bold; }
+  a img {
+    border: none; }
+
+h1 {
+  font-size: 20px;
+  color: #2a912e;
+  font-weight: normal;
+  background: #FAFAFA; }
+  h1.unpadded {
+    margin: 0;
+    padding: 0; }
+
+h2 {
+  color: #353535;
+  font-size: 18px; }
+
+p {
+  color: #555;
+  line-height: 1.6em; }
+  p.unpadded {
+    margin: 0; }
+  p.small {
+    font-size: .78em; }
+  p.secondary {
+    color: #777; }
+    p.secondary a {
+      color: #333; }
+
+blockquote {
+  margin-left: 0;
+  padding: 15px 5px 15px 15px;
+  border-left: solid 3px #AAA;
+  background: #F9F9F9;
+  color: #555;
+  font-size: .9em; }
+
+table {
+  width: 100%;
+  border-radius: 3px;
+  border-collapse: collapse;
+  font-size: .85em; }
+  table thead tr {
+    box-shadow: 1px 1px 2px #CCC; }
+    table thead tr th {
+      border-bottom: solid 1px #AAA;
+      background: #888;
+      color: #FFF; }
+      table thead tr th:first-child {
+        border-radius: 2px 0px 0 0; }
+      table thead tr th:last-child {
+        border-radius: 0px 2px 0 0; }
+  table tr {
+    background: #FFF;
+    border-top: solid 1px #EEE; }
+  table tr:first-child {
+    border-top: none; }
+  table tr:nth-child(2n) {
+    background: #FAFAFA; }
+  table td, table th {
+    margin: 0;
+    padding: 8px 20px; }
+
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 20.04.2018, 16:35:00
+    Author     : César de la Cal Bretschneider <cesar@magic3w.com>
+*/
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/*
+    Created on : 20.04.2018, 14:51:25
+    Author     : César de la Cal Bretschneider <cesar@magic3w.com>
+*/
+.span {
+  display: inline-block;
+  vertical-align: top;
+  overflow-x: hidden;
+  margin-left: 1.0416666667%;
+  min-height: 1px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  padding: 3px;
+  width: 97.9166666667%; }
+
+div.row {
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box; }
+  div.row:after {
+    content: "";
+    clear: both;
+    display: table;
+    width: 100%; }
+  div.row.fluid {
+    width: 100%;
+    max-width: 100%; }
+
+/*
+This are the functions (mixins) used to generate the basic scaffolding for our
+website. Due to the inverted functionality of the grid we rewrote big parts to 
+make them more usable.
+*/
+/*!
+    Created on : Oct 26, 2013, 7:18:16 PM
+    Author     : cesar
+*/
+.span.m1,
+.span.m2,
+.span.m3,
+.span.m4,
+.span.m5 {
+  margin-left: 1.0416666667%; }
+  .span.m1:first-child,
+  .span.m2:first-child,
+  .span.m3:first-child,
+  .span.m4:first-child,
+  .span.m5:first-child {
+    margin-left: 1.0416666667%; }
+
+._fs1-s1, .row.s2 > .span.s2, .row.s3 > .span.s3, .row.s4 > .span.s4, .row.s5 > .span.s5, .row.s6 > .span.s6, .row.s7 > .span.s7, .row.s8 > .span.s8, .row.s9 > .span.s9, .row.s10 > .span.s10,
+.row.s1 > .span.s1 {
+  width: 97.9166666667%; }
+
+._fs2-s1, .row.s4 > .span.s2, .row.s6 > .span.s3, .row.s8 > .span.s4, .row.s10 > .span.s5,
+.row.s2 > .span.s1 {
+  width: 47.9166666667%; }
+
+._fs3-s1, .row.s6 > .span.s2, .row.s9 > .span.s3,
+.row.s3 > .span.s1 {
+  width: 31.25%; }
+
+._fs3-s2, .row.s6 > .span.s4, .row.s9 > .span.s6,
+.row.s3 > .span.s2 {
+  width: 64.5833333333%; }
+
+._fs4-s1, .row.s8 > .span.s2,
+.row.s4 > .span.s1 {
+  width: 22.9166666667%; }
+
+._fs4-s3, .row.s8 > .span.s6,
+.row.s4 > .span.s3 {
+  width: 72.9166666667%; }
+
+._fs5-s1, .row.s10 > .span.s2,
+.row.s5 > .span.s1 {
+  width: 17.9166666667%; }
+
+._fs5-s2, .row.s10 > .span.s4,
+.row.s5 > .span.s2 {
+  width: 37.9166666667%; }
+
+._fs5-s3, .row.s10 > .span.s6,
+.row.s5 > .span.s3 {
+  width: 57.9166666667%; }
+
+._fs5-s4, .row.s10 > .span.s8,
+.row.s5 > .span.s4 {
+  width: 77.9166666667%; }
+
+._fs6-s1,
+.row.s6 > .span.s1 {
+  width: 14.5833333333%; }
+
+._fs6-s5,
+.row.s6 > .span.s5 {
+  width: 81.25%; }
+
+._fs7-s1,
+.row.s7 > .span.s1 {
+  width: 12.2023809524%; }
+
+._fs7-s2,
+.row.s7 > .span.s2 {
+  width: 26.4880952381%; }
+
+._fs7-s3,
+.row.s7 > .span.s3 {
+  width: 40.7738095238%; }
+
+._fs7-s4,
+.row.s7 > .span.s4 {
+  width: 55.0595238095%; }
+
+._fs7-s5,
+.row.s7 > .span.s5 {
+  width: 69.3452380952%; }
+
+._fs7-s6,
+.row.s7 > .span.s6 {
+  width: 83.630952381%; }
+
+._fs8-s1,
+.row.s8 > .span.s1 {
+  width: 10.4166666667%; }
+
+._fs8-s3,
+.row.s8 > .span.s3 {
+  width: 35.4166666667%; }
+
+._fs8-s5,
+.row.s8 > .span.s5 {
+  width: 60.4166666667%; }
+
+._fs8-s7,
+.row.s8 > .span.s7 {
+  width: 85.4166666667%; }
+
+._fs9-s1,
+.row.s9 > .span.s1 {
+  width: 9.0277777778%; }
+
+._fs9-s2,
+.row.s9 > .span.s2 {
+  width: 20.1388888889%; }
+
+._fs9-s4,
+.row.s9 > .span.s4 {
+  width: 42.3611111111%; }
+
+._fs9-s5,
+.row.s9 > .span.s5 {
+  width: 53.4722222222%; }
+
+._fs9-s7,
+.row.s9 > .span.s7 {
+  width: 75.6944444444%; }
+
+._fs9-s8,
+.row.s9 > .span.s8 {
+  width: 86.8055555556%; }
+
+._fs10-s1,
+.row.s10 > .span.s1 {
+  width: 7.9166666667%; }
+
+._fs10-s3,
+.row.s10 > .span.s3 {
+  width: 27.9166666667%; }
+
+._fs10-s7,
+.row.s10 > .span.s7 {
+  width: 67.9166666667%; }
+
+._fs10-s9,
+.row.s10 > .span.s9 {
+  width: 87.9166666667%; }
+
+@media all and (max-width: 960px) and (min-width: 480px) {
+  .desktop-only {
+    display: none !important; }
+
+  .mobile-only {
+    display: none; }
+
+  .not-tablet {
+    display: none; }
+
+  /*
+  This are the functions (mixins) used to generate the basic scaffolding for our
+  website. Due to the inverted functionality of the grid we rewrote big parts to 
+  make them more usable.
+  */
+  /*!
+      Created on : Oct 26, 2013, 7:18:16 PM
+      Author     : cesar
+  */
+  .span.m1,
+  .span.m2,
+  .span.m3,
+  .span.m4,
+  .span.m5,
+  .span.m6,
+  .span.m7 {
+    margin-left: 1.0416666667%; }
+    .span.m1:first-child,
+    .span.m2:first-child,
+    .span.m3:first-child,
+    .span.m4:first-child,
+    .span.m5:first-child,
+    .span.m6:first-child,
+    .span.m7:first-child {
+      margin-left: 1.0416666667%; }
+
+  ._fm1-m1, .row.m2 > .span.m2, .row.m3 > .span.m3, .row.m4 > .span.m4, .row.m5 > .span.m5, .row.m6 > .span.m6, .row.m7 > .span.m7, .row.m8 > .span.m8, .row.m9 > .span.m9, .row.m10 > .span.m10,
+  .row.m1 > .span.m1 {
+    width: 97.9166666667%; }
+
+  ._fm2-m1, .row.m4 > .span.m2, .row.m6 > .span.m3, .row.m8 > .span.m4, .row.m10 > .span.m5,
+  .row.m2 > .span.m1 {
+    width: 47.9166666667%; }
+
+  ._fm3-m1, .row.m6 > .span.m2, .row.m9 > .span.m3,
+  .row.m3 > .span.m1 {
+    width: 31.25%; }
+
+  ._fm3-m2, .row.m6 > .span.m4, .row.m9 > .span.m6,
+  .row.m3 > .span.m2 {
+    width: 64.5833333333%; }
+
+  ._fm4-m1, .row.m8 > .span.m2,
+  .row.m4 > .span.m1 {
+    width: 22.9166666667%; }
+
+  ._fm4-m3, .row.m8 > .span.m6,
+  .row.m4 > .span.m3 {
+    width: 72.9166666667%; }
+
+  ._fm5-m1, .row.m10 > .span.m2,
+  .row.m5 > .span.m1 {
+    width: 17.9166666667%; }
+
+  ._fm5-m2, .row.m10 > .span.m4,
+  .row.m5 > .span.m2 {
+    width: 37.9166666667%; }
+
+  ._fm5-m3, .row.m10 > .span.m6,
+  .row.m5 > .span.m3 {
+    width: 57.9166666667%; }
+
+  ._fm5-m4, .row.m10 > .span.m8,
+  .row.m5 > .span.m4 {
+    width: 77.9166666667%; }
+
+  ._fm6-m1,
+  .row.m6 > .span.m1 {
+    width: 14.5833333333%; }
+
+  ._fm6-m5,
+  .row.m6 > .span.m5 {
+    width: 81.25%; }
+
+  ._fm7-m1,
+  .row.m7 > .span.m1 {
+    width: 12.2023809524%; }
+
+  ._fm7-m2,
+  .row.m7 > .span.m2 {
+    width: 26.4880952381%; }
+
+  ._fm7-m3,
+  .row.m7 > .span.m3 {
+    width: 40.7738095238%; }
+
+  ._fm7-m4,
+  .row.m7 > .span.m4 {
+    width: 55.0595238095%; }
+
+  ._fm7-m5,
+  .row.m7 > .span.m5 {
+    width: 69.3452380952%; }
+
+  ._fm7-m6,
+  .row.m7 > .span.m6 {
+    width: 83.630952381%; }
+
+  ._fm8-m1,
+  .row.m8 > .span.m1 {
+    width: 10.4166666667%; }
+
+  ._fm8-m3,
+  .row.m8 > .span.m3 {
+    width: 35.4166666667%; }
+
+  ._fm8-m5,
+  .row.m8 > .span.m5 {
+    width: 60.4166666667%; }
+
+  ._fm8-m7,
+  .row.m8 > .span.m7 {
+    width: 85.4166666667%; }
+
+  ._fm9-m1,
+  .row.m9 > .span.m1 {
+    width: 9.0277777778%; }
+
+  ._fm9-m2,
+  .row.m9 > .span.m2 {
+    width: 20.1388888889%; }
+
+  ._fm9-m4,
+  .row.m9 > .span.m4 {
+    width: 42.3611111111%; }
+
+  ._fm9-m5,
+  .row.m9 > .span.m5 {
+    width: 53.4722222222%; }
+
+  ._fm9-m7,
+  .row.m9 > .span.m7 {
+    width: 75.6944444444%; }
+
+  ._fm9-m8,
+  .row.m9 > .span.m8 {
+    width: 86.8055555556%; }
+
+  ._fm10-m1,
+  .row.m10 > .span.m1 {
+    width: 7.9166666667%; }
+
+  ._fm10-m3,
+  .row.m10 > .span.m3 {
+    width: 27.9166666667%; }
+
+  ._fm10-m7,
+  .row.m10 > .span.m7 {
+    width: 67.9166666667%; }
+
+  ._fm10-m9,
+  .row.m10 > .span.m9 {
+    width: 87.9166666667%; } }
+@media all and (min-width: 960px) {
+  .mobile-only {
+    display: none; }
+
+  .tablet-only {
+    display: none; }
+
+  .not-desktop {
+    display: none; }
+
+  /*
+  This are the functions (mixins) used to generate the basic scaffolding for our
+  website. Due to the inverted functionality of the grid we rewrote big parts to 
+  make them more usable.
+  */
+  /*!
+      Created on : Oct 26, 2013, 7:18:16 PM
+      Author     : cesar
+  */
+  div.row {
+    width: 100%;
+    max-width: 71em; }
+
+  .span {
+    margin-left: 1.0416666667%; }
+    .span:first-child {
+      margin-left: 1.0416666667%; }
+
+  ._fl1-l1, .row.l2 > .span.l2, .row.l3 > .span.l3, .row.l4 > .span.l4, .row.l5 > .span.l5, .row.l6 > .span.l6, .row.l7 > .span.l7, .row.l8 > .span.l8, .row.l9 > .span.l9, .row.l10 > .span.l10,
+  .row.l1 > .span.l1 {
+    width: 97.9166666667%; }
+
+  ._fl2-l1, .row.l4 > .span.l2, .row.l6 > .span.l3, .row.l8 > .span.l4, .row.l10 > .span.l5,
+  .row.l2 > .span.l1 {
+    width: 47.9166666667%; }
+
+  ._fl3-l1, .row.l6 > .span.l2, .row.l9 > .span.l3,
+  .row.l3 > .span.l1 {
+    width: 31.25%; }
+
+  ._fl3-l2, .row.l6 > .span.l4, .row.l9 > .span.l6,
+  .row.l3 > .span.l2 {
+    width: 64.5833333333%; }
+
+  ._fl4-l1, .row.l8 > .span.l2,
+  .row.l4 > .span.l1 {
+    width: 22.9166666667%; }
+
+  ._fl4-l3, .row.l8 > .span.l6,
+  .row.l4 > .span.l3 {
+    width: 72.9166666667%; }
+
+  ._fl5-l1, .row.l10 > .span.l2,
+  .row.l5 > .span.l1 {
+    width: 17.9166666667%; }
+
+  ._fl5-l2, .row.l10 > .span.l4,
+  .row.l5 > .span.l2 {
+    width: 37.9166666667%; }
+
+  ._fl5-l3, .row.l10 > .span.l6,
+  .row.l5 > .span.l3 {
+    width: 57.9166666667%; }
+
+  ._fl5-l4, .row.l10 > .span.l8,
+  .row.l5 > .span.l4 {
+    width: 77.9166666667%; }
+
+  ._fl6-l1,
+  .row.l6 > .span.l1 {
+    width: 14.5833333333%; }
+
+  ._fl6-l5,
+  .row.l6 > .span.l5 {
+    width: 81.25%; }
+
+  ._fl7-l1,
+  .row.l7 > .span.l1 {
+    width: 12.2023809524%; }
+
+  ._fl7-l2,
+  .row.l7 > .span.l2 {
+    width: 26.4880952381%; }
+
+  ._fl7-l3,
+  .row.l7 > .span.l3 {
+    width: 40.7738095238%; }
+
+  ._fl7-l4,
+  .row.l7 > .span.l4 {
+    width: 55.0595238095%; }
+
+  ._fl7-l5,
+  .row.l7 > .span.l5 {
+    width: 69.3452380952%; }
+
+  ._fl7-l6,
+  .row.l7 > .span.l6 {
+    width: 83.630952381%; }
+
+  ._fl8-l1,
+  .row.l8 > .span.l1 {
+    width: 10.4166666667%; }
+
+  ._fl8-l3,
+  .row.l8 > .span.l3 {
+    width: 35.4166666667%; }
+
+  ._fl8-l5,
+  .row.l8 > .span.l5 {
+    width: 60.4166666667%; }
+
+  ._fl8-l7,
+  .row.l8 > .span.l7 {
+    width: 85.4166666667%; }
+
+  ._fl9-l1,
+  .row.l9 > .span.l1 {
+    width: 9.0277777778%; }
+
+  ._fl9-l2,
+  .row.l9 > .span.l2 {
+    width: 20.1388888889%; }
+
+  ._fl9-l4,
+  .row.l9 > .span.l4 {
+    width: 42.3611111111%; }
+
+  ._fl9-l5,
+  .row.l9 > .span.l5 {
+    width: 53.4722222222%; }
+
+  ._fl9-l7,
+  .row.l9 > .span.l7 {
+    width: 75.6944444444%; }
+
+  ._fl9-l8,
+  .row.l9 > .span.l8 {
+    width: 86.8055555556%; }
+
+  ._fl10-l1,
+  .row.l10 > .span.l1 {
+    width: 7.9166666667%; }
+
+  ._fl10-l3,
+  .row.l10 > .span.l3 {
+    width: 27.9166666667%; }
+
+  ._fl10-l7,
+  .row.l10 > .span.l7 {
+    width: 67.9166666667%; }
+
+  ._fl10-l9,
+  .row.l10 > .span.l9 {
+    width: 87.9166666667%; } }
+@media all and (max-width: 480px) {
+  .desktop-only {
+    display: none !important; }
+
+  .tablet-only {
+    display: none; }
+
+  .not-mobile {
+    display: none; } }
+.navbar {
+  background: #EEE;
+  box-shadow: 0 2px 2px #DDD;
+  border-bottom: 1px solid #CCC;
+  display: table;
+  width: 100%;
+  z-index: 5; }
+  .navbar .left,
+  .navbar .right {
+    display: table-cell;
+    padding: 15px 10px; }
+  .navbar .right {
+    text-align: right; }
+  .navbar a {
+    text-decoration: none;
+    color: #444;
+    font-weight: bold;
+    display: inline-block;
+    padding: 0 10px; }
+  .navbar .logo {
+    display: inline-block;
+    float: left;
+    border: none; }
+    .navbar .logo > * {
+      vertical-align: middle; }
+    .navbar .logo img {
+      height: 20px;
+      margin-right: 5px; }
+
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 17, 2016, 1:23:34 AM
+    Author     : cesar
+*/
+ul.pagination {
+  list-style: none;
+  text-align: center; }
+  ul.pagination li {
+    display: inline-block;
+    border: solid 1px #86b8e3;
+    border-left: none;
+    padding: 5px 12px; }
+    ul.pagination li:first-child {
+      border-left: solid 1px #86b8e3;
+      border-radius: 3px 0 0 3px; }
+    ul.pagination li:last-child {
+      border-radius: 0 3px 3px 0; }
+    ul.pagination li.disabled, ul.pagination li.disabled a {
+      color: #999; }
+    ul.pagination li.current, ul.pagination li.current a {
+      background: #25A9F8;
+      color: #FFF; }
+
+.separator {
+  border-top: solid 1px #CCC;
+  margin: 10px 0; }
+  .separator.large {
+    margin: 20px 0; }
+  .separator.light {
+    border-top: solid 1px #DDD; }
+
+.editable-property {
+  display: block; }
+  .editable-property > * {
+    vertical-align: top; }
+  .editable-property.mid-aligned > * {
+    vertical-align: middle; }
+  .editable-property .property-name {
+    display: inline-block;
+    width: 33%; }
+  .editable-property .property-value {
+    display: inline-block;
+    width: 50%; }
+  .editable-property .edit-link {
+    display: inline-block;
+    width: 17%; }
+    .editable-property .edit-link .cancel {
+      color: #a00; }
+
+.message {
+  padding: 10px 10px;
+  font-size: 13px;
+  border-color: #777;
+  border-width: 3px;
+  border-style: none none none solid;
+  border-radius: 2px; }
+  .message a {
+    font-weight: bold;
+    color: inherit; }
+  .message.success {
+    border-color: #3C7619;
+    background: #84D950;
+    color: #3C7619; }
+  .message.error {
+    border-color: #8c1013;
+    background: #F2B5B7;
+    color: #490C0E; }
+
+/*# sourceMappingURL=app.css.map */

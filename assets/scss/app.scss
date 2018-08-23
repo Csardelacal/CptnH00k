@@ -1,0 +1,160 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 02-jun-2015, 21:46:57
+    Author     : cesaradelacalbretschneider
+*/
+
+$disbled-darken-amount: 30;
+
+@import 'reset/_clearfix.scss';
+
+* { 
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	font-family: sans-serif;
+	background-color: #FAFAFA;
+}
+
+.hidden {
+	display: none !important;
+}
+
+/*
+ * Disabled items should be unable to receive mouse pointer events. When clicked
+ * or interacted with, these items should be unresponsive.
+ */
+:disabled, .disabled, [disabled] {
+	pointer-events: none;
+}
+
+a {
+	color: #555;
+	text-decoration: none;
+	
+	&:hover {
+		color: #333;
+	}
+	
+	&.highlighted {
+		color: #2a912e;
+		
+		&:hover {
+			color: #2a912e;
+		}
+	}
+	
+	&.heavy {
+		font-weight: bold;
+	}
+	
+	img {
+		border: none;
+	}
+}
+
+
+h1 {
+	font-size: 20px;
+	color:  #2a912e;
+	font-weight: normal;
+	background: #FAFAFA;
+	
+	&.unpadded {
+		margin: 0;
+		padding: 0;
+	}
+}
+
+h2 {
+	color: #353535;
+	font-size: 18px;
+}
+
+p {
+	color: #555;
+	line-height: 1.6em;
+	
+	&.unpadded {
+		margin: 0;
+	}
+	
+	&.small {
+		font-size: .78em;
+	}
+	
+	&.secondary {
+		color: #777; 
+		
+		a {
+			color: #333;
+		}
+	}
+}
+
+blockquote {
+	margin-left :                  0;
+	padding:      15px 5px 15px 15px;
+	border-left :     solid 3px #AAA;
+	background:              #F9F9F9;
+	color:                      #555;
+	font-size:                  .9em;
+}
+
+table {
+	width: 100%;
+	border-radius:        3px;
+	border-collapse: collapse;
+	font-size:          .85em;
+	
+	thead tr {
+		box-shadow: 1px 1px 2px #CCC;
+		
+		th {
+			border-bottom: solid 1px #AAA;
+			background: #888;
+			color: #FFF;
+			
+			&:first-child {
+				border-radius: 2px 0px 0 0;
+			}
+			
+			&:last-child {
+				border-radius: 0px 2px 0 0;
+			}
+		}
+	}
+	
+	tr {
+		background: #FFF;
+		border-top: solid 1px #EEE;
+	}
+	
+	tr:first-child {
+		border-top: none;
+	}
+	
+	tr:nth-child(2n) {
+		background: #FAFAFA;
+	}
+	
+	td, th {
+		margin: 0;
+		padding: 8px 20px;
+	}
+}
+
+
+
+@import '_vars.scss';
+@import 'scaffolding/_scaffolding.scss';
+@import '_navbar';
+@import '_pagination';
+@import '_properties';
+@import '_messages';
