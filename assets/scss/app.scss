@@ -75,6 +75,11 @@ h1 {
 h2 {
 	color: #353535;
 	font-size: 18px;
+	
+	&.unpadded {
+		margin: 0;
+		padding: 0;
+	}
 }
 
 p {
@@ -155,6 +160,8 @@ table {
 @import '_vars.scss';
 @import 'scaffolding/_scaffolding.scss';
 @import '_navbar';
+@import '_material';
+@import '_list';
 @import '_pagination';
 @import '_properties';
 @import '_messages';

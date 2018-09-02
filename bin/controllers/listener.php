@@ -58,7 +58,7 @@ class ListenerController extends BaseController
 			 * server, when app.* events happen, it could automatically refresh
 			 * the application list.
 			 */
-			$authapp = db()->table('authapp')->get('appID', $this->authapp->getRemote()->getId())->first();
+			$authapp = $this->authapp? db()->table('authapp')->get('appID', $this->authapp->getRemote()->getId())->first() : null;
 			$target  = db()->table('authapp')->get('appID', $authapp && !$authapp->isSSO? $this->authapp->getRemote()->getId() : $_POST['target'])->first(true);
 			
 			/*
@@ -222,7 +222,7 @@ class ListenerController extends BaseController
 				->first(true);
 		}
 		else {
-			$listener = db()->table()->get('_id', $id)->first(true);
+			$listener = db()->table('listener')->get('_id', $id)->first(true);
 		}
 		
 		$listener->delete();

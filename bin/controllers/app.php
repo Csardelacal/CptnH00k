@@ -1,5 +1,9 @@
 <?php
 
+use auth\SSO;
+use spitfire\core\Environment;
+use spitfire\exceptions\PublicException;
+
 /* 
  * The MIT License
  *
@@ -35,6 +39,18 @@ class AppController extends BaseController
 		$this->view->set('app', $this->authapp);
 	}
 	
+	public function hooks(AuthAppModel$app) {
+		
+		if (!$this->user) {
+			throw new PublicException('Login required', 403);
+		}
+		
+		$hooks = db()->table('listener')->get('target', $app)->all();
+		
+		$this->view->set('apps', db()->table('authapp')->getAll()->all());
+		$this->view->set('hooks', $hooks);
+	}
+	
 	public function refresh() {
 		
 		$ssoList = db()->table('authapp')->get('isSSO', true)->all();
@@ -49,7 +65,7 @@ class AppController extends BaseController
 			$record->name = 'SSO Server';
 			$record->sso = null;
 			$record->isSSO = true;
-			$record->ssoURL = spitfire\core\Environment::get('SSO');
+			$record->ssoURL = Environment::get('SSO');
 			$record->configuration = null;
 			$record->store();
 			
@@ -58,11 +74,11 @@ class AppController extends BaseController
 		
 		foreach ($ssoList as $ssoRecord) {
 			if ($ssoRecord->appID == $this->sso->getAppId()) {
-				$ssoRecord->ssoURL = spitfire\core\Environment::get('SSO');
+				$ssoRecord->ssoURL = Environment::get('SSO');
 				$ssoRecord->store();
 			}
 			
-			$sso  = new \auth\SSO($ssoRecord->ssoURL);
+			$sso  = new SSO($ssoRecord->ssoURL);
 			$apps = $sso->getAppList();
 			
 			foreach ($apps as $app) {
