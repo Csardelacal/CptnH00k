@@ -30,6 +30,6 @@ class HomeController extends BaseController
 		}
 		
 		$this->view->set('stats', $stats);
-		$this->view->set('max', $max);
+		$this->view->set('max', min(1, $max));
 	}
 }
