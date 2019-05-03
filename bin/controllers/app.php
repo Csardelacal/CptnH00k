@@ -39,6 +39,12 @@ class AppController extends BaseController
 		$this->view->set('app', $this->authapp);
 	}
 	
+	/**
+	 * 
+	 * @param AuthAppModel $app
+	 * @throws PublicException
+	 * @deprecated since version 0.1-dev 20190503
+	 */
 	public function hooks(AuthAppModel$app) {
 		
 		if (!$this->user) {

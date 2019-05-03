@@ -104,62 +104,57 @@ class ListenerController extends BaseController
 	}
 	
 	/**
+	 * This endpoint allows the SSO server to query the listeners registered on
+	 * the applications
 	 * 
-	 * @validate schedule (number positive)
-	 * @validate defer (number positive)
-	 * @validate event (required string length[3, 50])
+	 * @param string $p
+	 * @param string $_
+	 * @throws PublicException
 	 */
-	public function trigger() {
+	public function registered($p, $_ = null) {
 		
-		if (!$this->authapp && !$this->user) {
-			throw new PublicException('Insufficient privileges', 403);
+		if ($this->authapp) {
+			
+			$sso = db()->table('authapp')->get('appID', $this->authapp->getSrc()->getId())->first(true);
+			
+			if (!$sso || !$sso->isSSO) {
+				throw new PublicException('Application cannot list listeners, please refer to your authentication server', 403);
+			}
 		}
-				
-		if ($this->authapp && $this->authapp->getRemote()) {
-			$src = $this->authapp->getRemote()->getId();
-		}
-		/*
-		 * The application does not provide a remote source, this would imply that
-		 * the other party is the SSO server (since it is the only app that does 
-		 * not require signing)
-		 */
-		elseif ($this->authapp && $this->authapp->getSrc()->getId() == $this->sso->getAppId()) {
-			$src = $this->authapp->getSrc()->getId();
-		}
-		elseif ($_GET['psk']) {
-			//TODO Define behavior when an application with a pre-shared-key is pushing an event
-		}
-		elseif($this->user && isset($_POST['authapp'])) {
-			$src = $_POST['authapp'];
+		elseif ($this->user) {
+			//If a user is logged into the application, it means they're an administrator
 		}
 		else {
-			throw new PublicException('No application defined', 403);
+			throw new PublicException('Invalid signature received.', 403);
 		}
 		
-		/*
-		 * Spitfire will automatically handle JSON and XML payloads and convert 
-		 * them to post, this way the application can just store the _POST variable
-		 * and use it later, when placing it in the outbox.
-		 */
-		$payload = json_encode($_POST);
+		$query = db()->table('listener')->getAll();
 		
-		/*
-		 * Identify the trigger that was sent from the app. This allows applications
-		 * to listen for certain events within the source application instead of
-		 * listening to all events.
-		 */
-		$trigger = $_GET['event'];
+		foreach (array_filter([$p, $_]) as $param) {
+			$pieces = explode(':', $param);
+			
+			if (count($pieces) !== 2) {
+				throw new PublicException('Invalid parameter', 400);
+			}
+			
+			list($role, $appID) = $pieces;
+			
+			$app = db()->table('authapp')->get('appID', $appID)->first(true);
+			$query = db()->table('listener')->get($role === 'from'? 'source' : 'target', $app);
+			
+			$this->view->set($role === 'from'? 'source' : 'target', $app);
+		}
 		
-		$record  = db()->table('inbox')->newRecord();
-		$record->app = db()->table('authapp')->get('appID', $src)->first();
-		$record->trigger = $trigger;
-		$record->payload = $payload;
-		$record->scheduled = (isset($_GET['schedule'])? $_GET['schedule'] : time()) + (isset($_GET['defer'])? $_GET['defer'] : 0);
-		$record->store();
+		$listeners = $query->all();
 		
-		$this->view->set('record', $record);
+		$this->view->set('listeners', $listeners);
 	}
 	
+	/**
+	 * @deprecated since version 0.1-dev 20190503
+	 * @param type $appId
+	 * @throws PublicException
+	 */
 	public function on($appId) {
 		
 		if (!$this->authapp) {
@@ -186,6 +181,11 @@ class ListenerController extends BaseController
 		$this->view->set('listeners', $listeners);
 	}
 	
+	/**
+	 * @deprecated since version 0.1-dev 20190503
+	 * @param type $appId
+	 * @throws PublicException
+	 */
 	public function target($appId) {
 		
 		if (!$this->authapp) {
