@@ -14,6 +14,24 @@
 			</div><!--
 			<?php endforeach; ?>
 		--></div>
+		
+		<div class="spacer" style="height: 20px"></div>
+		<div class="row l6">
+			<div class="span l4">
+				<h2>Recent hooks</h2>
+			</div>
+		</div>
+		<?php foreach(db()->table('inbox')->getAll()->setOrder('created', 'DESC')->range(0, 25) as $sample): ?>
+		<div class="row l6">
+			<div class="span l4">
+				from <strong><?= $sample->app->name ?></strong> (<?= $sample->trigger ?>)
+			</div>
+			<div class="span l2" style="text-align: right">
+				<?= Time::relative($sample->created) ?>
+			</div>
+		</div>
+		<div class="spacer" style="height: 10px"></div>
+		<?php endforeach; ?>
 	</div>
 	<div class="span l2">
 		<div class="material unpadded">
@@ -22,7 +40,7 @@
 			</div>
 			<ul class="list">
 				<?php foreach ($apps as $app): ?>
-				<li><a href="<?= url('app', 'hooks', $app->_id) ?>"><?= $app->name ?></a></li>
+				<li><a href="<?= url('listener', 'registered', 'to:' . $app->appID) ?>"><?= $app->name ?></a></li>
 				<?php endforeach; ?>
 			</ul>
 		</div>

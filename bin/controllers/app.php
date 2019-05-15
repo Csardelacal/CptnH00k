@@ -35,28 +35,25 @@ class AppController extends BaseController
 		
 	}
 	
+	/**
+	 * This endpoint allows applications to test whether they managed to successfully
+	 * authenticated themselves against the server.
+	 * 
+	 * Generally this step is only used when setting up the application and is not
+	 * required for the normal operation of CptnH00K
+	 */
 	public function authenticate() {
 		$this->view->set('app', $this->authapp);
 	}
 	
 	/**
+	 * This endpoint allows the owner of the webhook server to refresh the list
+	 * of applications available to the SSO server. This should be done in a regular
+	 * fashion to ensure that all webhooks can be created.
 	 * 
-	 * @param AuthAppModel $app
-	 * @throws PublicException
-	 * @deprecated since version 0.1-dev 20190503
+	 * CptnH00k should be able to listen to updates on hooks that refer to the application
+	 * list on the SSO servers it manages.
 	 */
-	public function hooks(AuthAppModel$app) {
-		
-		if (!$this->user) {
-			throw new PublicException('Login required', 403);
-		}
-		
-		$hooks = db()->table('listener')->get('target', $app)->all();
-		
-		$this->view->set('apps', db()->table('authapp')->getAll()->all());
-		$this->view->set('hooks', $hooks);
-	}
-	
 	public function refresh() {
 		
 		$ssoList = db()->table('authapp')->get('isSSO', true)->all();

@@ -151,61 +151,6 @@ class ListenerController extends BaseController
 	}
 	
 	/**
-	 * @deprecated since version 0.1-dev 20190503
-	 * @param type $appId
-	 * @throws PublicException
-	 */
-	public function on($appId) {
-		
-		if (!$this->authapp) {
-			throw new PublicException('Invalid signature received.', 403);
-		}
-		
-		$sso = db()->table('authapp')->get('appID', $this->authapp->getSrc()->getId())->first(true);
-		
-		if (!$sso || !$sso->isSSO) {
-			throw new PublicException('Application cannot list listeners, please refer to your authentication server', 403);
-		}
-		
-		$app = db()->table('authapp')->get('appID', $appId)->first(true);
-		
-		$query = db()->table('listener')->get('source', $app);
-		
-		if(isset($_GET['target']) && !empty($_GET['target'])) {
-			$query->where('target', db()->table('authapp')->get('appID', $_GET['target'])->first(true));
-		}
-		
-		$listeners = $query->all();
-		
-		$this->view->set('app', $app);
-		$this->view->set('listeners', $listeners);
-	}
-	
-	/**
-	 * @deprecated since version 0.1-dev 20190503
-	 * @param type $appId
-	 * @throws PublicException
-	 */
-	public function target($appId) {
-		
-		if (!$this->authapp) {
-			throw new PublicException('Invalid signature received.', 403);
-		}
-		
-		$sso = db()->table('authapp')->get('appID', $this->authapp->getSrc()->getId())->first(true);
-		
-		if (!$sso || !$sso->isSSO) {
-			throw new PublicException('Application cannot list listeners, please refer to your authentication server', 403);
-		}
-		
-		$app = db()->table('authapp')->get('appID', $appId)->first(true);
-		$listeners = db()->table('listener')->get('target', $app)->all();
-		
-		$this->view->set('app', $app);
-		$this->view->set('listeners', $listeners);
-	}
-
-	/**
 	 * 
 	 * 
 	 */
