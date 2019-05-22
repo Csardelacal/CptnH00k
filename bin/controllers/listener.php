@@ -147,6 +147,8 @@ class ListenerController extends BaseController
 		
 		$listeners = $query->all();
 		
+		$this->view->set('selectedApp', $app->appID);
+		$this->view->set('role', $role);
 		$this->view->set('listeners', $listeners);
 	}
 	

@@ -19,7 +19,7 @@ $disbled-darken-amount: 30;
 body {
 	margin: 0;
 	font-family: sans-serif;
-	background-color: #FAFAFA;
+	background-color: #FFF;
 }
 
 .hidden {
@@ -35,11 +35,11 @@ body {
 }
 
 a {
-	color: #555;
+	color: #2f97e0;
 	text-decoration: none;
 	
 	&:hover {
-		color: #333;
+		color: #3f86b8;
 	}
 	
 	&.highlighted {
@@ -165,3 +165,4 @@ table {
 @import '_pagination';
 @import '_properties';
 @import '_messages';
+@import '_/_.scss';

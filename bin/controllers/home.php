@@ -13,9 +13,6 @@ class HomeController extends BaseController
 			$this->response->setBody('Redirecting...')->getHeaders()->redirect(url('user', 'login'));
 		}
 		
-		$apps = db()->table('authapp')->getAll()->all();
-		$this->view->set('apps', $apps);
-		
 		$stats = [];
 		$span  = 86400;
 		$step  = 20 * 60; //Resolution of the graph is 10 minutes

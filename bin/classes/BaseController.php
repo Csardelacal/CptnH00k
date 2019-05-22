@@ -115,6 +115,10 @@ abstract class BaseController extends Controller
 		$this->view->set('sso', $this->sso);
 		$this->view->set('auth.user', $this->user);
 		$this->view->set('auth.app',  $this->authapp);
+		
+		
+		$apps = db()->table('authapp')->getAll()->all();
+		$this->view->set('apps', $apps);
 	}
 	
 }
