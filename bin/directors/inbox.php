@@ -1,5 +1,6 @@
 <?php
 
+use hook\Transliteration;
 use spitfire\mvc\Director;
 
 /* 
@@ -72,7 +73,7 @@ class InboxDirector extends Director
 				$outbox = db()->table('outbox')->newRecord();
 				$outbox->app = $listener->target;
 				$outbox->url = $listener->URL;
-				$outbox->payload = $record->payload; //TODO: Perform transliteration here
+				$outbox->payload = $listener->transliteration? Transliteration::instance($record->payload, $listener->transliteration)->transliterate() : $record->payload;
 				$outbox->scheduled = $record->scheduled + $listener->defer;
 				$outbox->store();
 			}

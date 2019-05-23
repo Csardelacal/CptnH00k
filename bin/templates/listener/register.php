@@ -33,6 +33,10 @@
 	<input type="text" name="defer" value="0">
 	
 	
+	<label>Transliterate:</label> 
+	<textarea name="transliteration"></textarea>
+	
+	
 	<label>Format:</label>  
 	<select name="format">
 		<option value="json">JSON</option>

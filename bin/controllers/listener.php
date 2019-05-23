@@ -83,6 +83,7 @@ class ListenerController extends BaseController
 			$record->URL = $_POST['url'];
 			$record->defer = $_POST['defer'];
 			$record->format = $_POST['format'];
+			$record->transliteration = $_POST['transliteration']?? null;
 			$record->createdBy = $this->authapp? 'app:' . $this->authapp->getRemote()->getId() : 'user:' . (int)$this->user;
 			
 			$record->store();
