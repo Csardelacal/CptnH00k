@@ -158,11 +158,11 @@ table {
 
 
 @import '_vars.scss';
-@import 'scaffolding/_scaffolding.scss';
 @import '_navbar';
 @import '_material';
 @import '_list';
 @import '_pagination';
 @import '_properties';
 @import '_messages';
+@import '_styledSelect.scss';
 @import '_/_.scss';
