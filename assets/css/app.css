@@ -102,6 +102,34 @@ table {
     margin: 0;
     padding: 8px 20px; }
 
+.button {
+  background: none repeat scroll 0 0 #3191f1;
+  border: solid 1px #3191f1;
+  border-right: solid 1px #3167f1;
+  border-bottom: solid 1px #3167f1;
+  border-radius: 3px;
+  box-shadow: -2px -2px 1px #3167f1 inset;
+  color: #ffffff;
+  font-weight: bold;
+  padding: .5em .7em;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block; }
+  .button:hover {
+    color: #FFF; }
+  .button[disabled] {
+    background: none repeat scroll 0 0 #CCC;
+    box-shadow: -2px -2px 1px #AAA inset; }
+  .button.small {
+    font-size: .8em;
+    padding: .25em .65em; }
+  .button.middle {
+    vertical-align: middle; }
+
+.pull_lr {
+  display: flex;
+  justify-content: space-between; }
+
 .navbar {
   background: #EEE;
   box-shadow: 0 2px 2px #DDD;

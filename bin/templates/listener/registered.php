@@ -3,9 +3,14 @@
 
 <div class="row l1">
 	<div class="span l1">
-		<div class="navigation tabs">
-			<a class="navigation-item <?= $role == 'from'? '' : 'active' ?>" href="<?= url('listener', 'registered', 'to:' . $selectedApp) ?>">Incoming</a>
-			<a class="navigation-item <?= $role == 'from'? 'active' : '' ?>" href="<?= url('listener', 'registered', 'from:' . $selectedApp) ?>">Outgoing</a>
+		<div class="navigation tabs pull_lr">
+			<div>
+				<a class="navigation-item <?= $role == 'from'? '' : 'active' ?>" href="<?= url('listener', 'registered', 'to:' . $selectedApp) ?>">Incoming</a>
+				<a class="navigation-item <?= $role == 'from'? 'active' : '' ?>" href="<?= url('listener', 'registered', 'from:' . $selectedApp) ?>">Outgoing</a>
+			</div>
+			<div>
+				<a class="navigation-item" href="<?= url('listener', 'register') ?>" style="font-weight: bold" >+ New</a>
+			</div>
 		</div>
 	</div>
 </div>

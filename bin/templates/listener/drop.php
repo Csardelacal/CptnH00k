@@ -24,4 +24,4 @@
  * THE SOFTWARE.
  */
 
-current_context()->response->getHeaders()->redirect(url('app', 'hooks', $listener->target->_id));
+current_context()->response->getHeaders()->redirect(url('listener', 'registered', 'to:' . $listener->target->appID));
