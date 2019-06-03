@@ -14,3 +14,4 @@
  */
 
 spitfire\core\router\Router::getInstance()->request('listener/trigger', 'event/push');
+spitfire\core\router\Router::getInstance()->request('listener/register/', 'listener/edit/');

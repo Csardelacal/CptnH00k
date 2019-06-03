@@ -40,7 +40,7 @@ class ListenerController extends BaseController
 	 * @validate >> POST#transliteration(string) AND POST#url(required url)
 	 * @validate >> POST#format(in[xml, json, nvp])
 	 */
-	public function register() {
+	public function edit(ListenerModel$l = null) {
 		
 		if (!$this->user && !$this->authapp) {
 			throw new PublicException('Requires login', 403);
@@ -69,7 +69,7 @@ class ListenerController extends BaseController
 			 * exists, they can just parse their recipe file, push the hooks and
 			 * let h00k do the work.
 			 */
-			$record = db()->table('listener')->get('target', $target)->where('internalId', $_POST['hid'])->first()? : db()->table('listener')->newRecord();
+			$record = $l? : (db()->table('listener')->get('target', $target)->where('internalId', $_POST['hid'])->first()? : db()->table('listener')->newRecord());
 			
 			/*
 			 * Use the data submitted to register the hook. We make sure the data
@@ -102,6 +102,8 @@ class ListenerController extends BaseController
 				throw new PublicExeption('Invalid request method. Apps cannot GET this endpoint', 400); 
 			}
 		}
+		
+		$this->view->set('listener', $l);
 	}
 	
 	/**

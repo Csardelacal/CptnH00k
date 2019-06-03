@@ -31,7 +31,7 @@
 			
 			<div class="span l1">
 				<div><a href="<?= url('listener', 'drop', $hook->_id) ?>">Delete</a></div>
-				<div><a href="<?= url() ?>">Edit</a></div>
+				<div><a href="<?= url('listener', 'edit', $hook->_id) ?>">Edit</a></div>
 			</div>
 		</div>
 		

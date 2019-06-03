@@ -20,7 +20,7 @@
 			<select class="styled-select" name="app" style="width: 100%">
 				<option value="">---</option>
 				<?php foreach ($apps as $app): ?>
-				<option value="<?= $app->appID ?>"><?= $app->name ?></option>
+				<option value="<?= $app->appID ?>" <?= $listener && $listener->source->_id === $app->_id? 'selected' : '' ?>><?= $app->name ?></option>
 				<?php endforeach; ?>
 			</select>
 		</div>
@@ -31,7 +31,7 @@
 			<select  class="styled-select" name="target" style="width: 100%">
 				<option value="">---</option>
 				<?php foreach ($apps as $app): ?>
-				<option value="<?= $app->appID ?>"><?= $app->name ?></option>
+				<option value="<?= $app->appID ?>" <?= $listener && $listener->target->_id === $app->_id? 'selected' : '' ?>><?= $app->name ?></option>
 				<?php endforeach; ?>
 			</select>
 		</div>
@@ -44,7 +44,7 @@
 			<label>Internal ID</label> 
 		</div>
 		<div class="span l2">
-			<input type="text" name="hid" style="width: 100%">
+			<input type="text" name="hid" style="width: 100%" value="<?= $listener? __($listener->internalId) : '' ?>">
 			<p class="small secondary">
 				Used for reference, must be unique for the target app. When creating 
 				two hooks with the same target and ID combination, the first one will
@@ -55,7 +55,7 @@
 			<label>Listen for</label> 
 		</div>
 		<div class="span l2">
-			<input type="text" name="listen" style="width: 100%">
+			<input type="text" name="listen" style="width: 100%" value="<?= $listener? __($listener->listenTo) : '' ?>">
 		</div>
 	</div>
 	
@@ -66,7 +66,7 @@
 			<label>URL:</label> 
 		</div>
 		<div class="span l5">
-			<input type="text" name="url" style="width: 100%">
+			<input type="text" name="url" style="width: 100%" value="<?= $listener? __($listener->URL) : '' ?>">
 		</div>
 	</div>
 	
@@ -88,7 +88,7 @@
 			<label>Transliterate:</label> 
 		</div>
 		<div class="span l5">
-			<textarea name="transliteration" style="width: 100%"></textarea>
+			<textarea name="transliteration" style="width: 100%"><?= $listener? __($listener->transliteration) : '' ?></textarea>
 			<p class="small secondary">
 				Transliteration allows the data the source application sends to be 
 				converted to a different format, allowing to connect potentially
@@ -104,16 +104,16 @@
 			<label>Delay</label> 
 		</div>
 		<div class="span l2">
-			<input type="text" name="defer" value="0" style="width: 100%; text-align: right">
+			<input type="text" name="defer" style="width: 100%; text-align: right" value="<?= $listener? __($listener->defer) : '0' ?>">
 		</div>
 		<div class="span l1">
 			<label>Format</label>  
 		</div>
 		<div class="span l2">
 			<select name="format" class="styled-select" style="width: 100%">
-				<option value="json">JSON</option>
-				<option value="xml">XML</option>
-				<option value="nvp">Key-Value Pairs</option>
+				<option value="json" <?= $listener && $listener->format === 'json'? 'selected' : '' ?>>JSON</option>
+				<option value="xml" <?= $listener && $listener->format === 'xml'? 'selected' : '' ?>>XML</option>
+				<option value="nvp" <?= $listener && $listener->format === 'nvp'? 'selected' : '' ?>>Key-Value Pairs</option>
 			</select>
 		</div>
 	</div>
