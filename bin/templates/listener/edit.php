@@ -1,4 +1,16 @@
 
+<?php if (isset($success)): ?>
+<div class="spacer" style="height: 20px"></div>
+
+<div class="row l1">
+	<div class="span l1">
+		<div class="message success">
+			Hook written successfully.
+		</div>
+	</div>
+</div>
+<?php endif; ?>
+
 <form method="POST" action="">
 	<?php $apps = db()->table('authapp')->getAll()->all(); ?>
 	
